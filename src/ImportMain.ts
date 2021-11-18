@@ -1,7 +1,7 @@
 import { parse } from 'ts-command-line-args';
 import { getLogger, setLogLevel } from './lib/logging'
 import { CategoryLogger, LogLevel } from 'typescript-logging';
-import { initializeOCRWorkers, recognizeCharacters } from './lib/ocr';
+import { initializeOCRWorkers, recognizeCharacters, terminateOCR } from './lib/ocr';
 
 const log: CategoryLogger = getLogger("main")
 
@@ -33,14 +33,21 @@ async function main() {
     log.info('Initilizing OCR workers')
     await initializeOCRWorkers()
 
-    recognizeRawRecipe("http://localhost:3000/recipes/raw-recipes/img20200322_16552432.jpg",
+    await recognizeRawRecipe("http://localhost:3000/recipes/raw-recipes/img20200322_16552432.jpg",
                     "http://localhost:3000/recipes/raw-recipes/img20200322_16555410.jpg")
+
+    await terminateOCR()
 }
 
 async function recognizeRawRecipe(recipeFrontUrl:string, recipeBackUrl:string) {
     log.info(`Recognizing raw recipe ${recipeFrontUrl} and back side ${recipeBackUrl}`)
     let title = recognizeCharacters(recipeFrontUrl, { left: 50, top: 70, width: 1200, height: 100 })
     let subTitle = recognizeCharacters(recipeFrontUrl, { left: 50, top: 165, width: 1200, height: 125 })
+    //let keywords = recognizeCharacters(recipeFrontUrl, { left: 0, top: 0, width: 0, height: 0 })
+    //let time = recognizeCharacters(recipeFrontUrl, { left: 0, top: 0, width: 0, height: 0 })
+    //let servings = recognizeCharacters(recipeFrontUrl, { left: 0, top: 0, width: 0, height: 0 })
+    //let description = recognizeCharacters(recipeFrontUrl, { left: 0, top: 0, width: 0, height: 0 })
+    //let ingredients = recognizeCharacters(recipeFrontUrl, { left: 0, top: 0, width: 0, height: 0 })
 
     log.info(await title)
     log.info(await subTitle)
