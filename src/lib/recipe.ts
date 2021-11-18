@@ -1,11 +1,13 @@
+import { v4 as uuid } from 'uuid';
 
 export class Recipe {
 
-    constructor(public id: string,
+    constructor(
                 public title: string,
-                public subtitle: string,
-                public description: string,
-                public image_urls: string[],
+                public subtitle: string= "",
+                public description: string= "",
+                public imageUrls: string[] = [],
+                public id: string = uuid(),
                 public ingredients: Ingredient[],
                 public steps: Step[]) {
     }
@@ -14,7 +16,7 @@ export class Recipe {
 export class Ingredient {
 
     constructor(public name: string,
-                public amount: Amount) {
+                public amount: Amount = new Amount(1)) {
     }
 }
 
@@ -29,5 +31,9 @@ export class Amount {
 
     constructor(public amount: number,
                 public unit: string = "") {
+    }
+
+    public hasUnit(): boolean {
+        return this.unit.length > 0
     }
 }
