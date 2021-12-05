@@ -6,10 +6,10 @@ export class Recipe {
                 public title: string,
                 public subtitle: string= "",
                 public description: string= "",
-                public imageUrls: string[] = [],
-                public id: string = uuid(),
                 public ingredients: Ingredient[],
-                public steps: Step[]) {
+                public steps: Step[],
+                public imageUrls: string[] = [],
+                public id: string = uuid()) {
     }
 }
 

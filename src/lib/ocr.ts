@@ -3,13 +3,13 @@ import { getLogger } from './logging'
 import { CategoryLogger } from 'typescript-logging';
 
 const log: CategoryLogger = getLogger("ocr")
-let worker = createWorker({
-    logger: m => log.debug(JSON.stringify(m))
-});
 let scheduler = createScheduler()
 
 export async function initializeOCRWorkers() {
     for (let i = 0; i < 4; i++) {
+        let worker = createWorker({
+            logger: m => log.debug(JSON.stringify(m))
+        });
         await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
